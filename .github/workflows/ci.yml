@@ -39,6 +39,8 @@ jobs:
       - run: dotnet build ConfigService.sln --no-restore --configuration Release
       - name: OpenAPI document is up to date
         run: git diff --exit-code -- docs/openapi/v1.json
+      - name: Every package has a row in docs/dependencies.md
+        run: dotnet run scripts/CheckDependencyRegister.cs
 
   tier0-unit:
     runs-on: ubuntu-latest
