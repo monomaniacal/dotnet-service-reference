@@ -99,6 +99,11 @@ public static class ApplicationEndpoints
         IApplicationRepository repository,
         CancellationToken ct)
     {
+        if (ct.IsCancellationRequested)
+        {
+            return TypedResults.Ok(Enumerable.Empty<ApplicationResponse>());
+        }
+
         var applications = await repository.GetAllAsync(ct);
         return TypedResults.Ok(applications.Select(ToResponse));
     }
