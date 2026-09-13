@@ -288,6 +288,7 @@ unscheduled.
 | 35 | DELETE and pagination | api | A consumer asks for them | Endpoint tests |
 | 36 | Conditional strip of the sample domain in the template | template | Renaming by hand proves painful twice | `dotnet new --sample false` builds |
 | 37 | Devcontainer | dx | Onboarding a machine takes more than an hour | Fresh container builds and tests |
+| 38 | Second persistence adapter behind the repository interfaces, with one contract test suite run against both adapters | api | Deferred. Trigger: the template package lands (item 26) or someone needs to run the service without Docker. Options and trade-offs in ADR 0006. | Contract suite passes against both adapters; database-only tests unchanged |
 
 ## 9. Out of scope
 
