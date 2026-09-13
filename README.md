@@ -21,13 +21,11 @@ A small ASP.NET Core 10 Minimal API for managing **applications** and their **co
 
 - **.NET 10 SDK**
 - **Docker** (with Compose support — `docker compose`, not the old `docker-compose`)
-- The **`dotnet-ef`** global tool, needed for the migration workflow described below:
+- Repo-local tools (`dotnet-ef`, `husky`) come from the tool manifest. After cloning, run:
 
   ```bash
-  dotnet tool install --global dotnet-ef
+  dotnet tool restore
   ```
-
-  (or `dotnet tool update --global dotnet-ef` if you already have an older version)
 
 All commands below are run from `project/config-service/` (this directory) unless noted
 otherwise.
@@ -43,6 +41,15 @@ with credentials/database name `configservice`/`configservice`/`configservice` (
 `docker-compose.yml` and `src/ConfigService.Api/appsettings.Development.json`). Data persists in
 a named Docker volume across restarts. Run `docker compose down` to stop it, or `docker compose
 down -v` to also delete the volume and start from a truly empty database next time.
+
+Then tell the service how to reach it. The connection string is not committed; store it once
+per machine in user secrets:
+
+```bash
+dotnet user-secrets set "Database:ConnectionString" "Host=localhost;Port=5432;Database=configservice;Username=configservice;Password=configservice" --project src/ConfigService.Api
+```
+
+Every setting the service reads is listed in `docs/configuration.md`.
 
 ## Running the service
 
@@ -68,14 +75,18 @@ ahead of time, against that environment's own connection string:
 dotnet ef database update --project src/ConfigService.Api --startup-project src/ConfigService.Api
 ```
 
-By default this resolves the connection string the same way the app does in Development
-(`ConnectionStrings:Default` from `appsettings.json` / `appsettings.{Environment}.json` /
-environment variables — see `src/ConfigService.Api/Data/ConfigDbContextFactory.cs`, the
-design-time factory `dotnet ef` uses to construct the `DbContext`). To target a different
-environment's database, set `ConnectionStrings__Default` in the environment before running the
-command (or point `--connection` at the target string directly), then run it from a machine that
-can reach that database. This is the *only* way non-Development environments get their schema —
-if you skip it, the app will fail against an out-of-date/empty database.
+`dotnet ef` builds the app's own host, so it reads the same configuration sources. Locally,
+pass `-- --environment Development` so user secrets are loaded:
+
+```bash
+dotnet ef database update --project src/ConfigService.Api -- --environment Development
+```
+
+To target a different environment's database, set `Database__ConnectionString` in the
+environment before running the command (or point `--connection` at the target string directly),
+then run it from a machine that can reach that database. This is the *only* way non-Development
+environments get their schema — if you skip it, the app will fail against an out-of-date/empty
+database.
 
 ## Trying the API
 
