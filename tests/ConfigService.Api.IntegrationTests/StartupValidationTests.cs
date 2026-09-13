@@ -37,4 +37,24 @@ public sealed class StartupValidationTests
 
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
     }
+
+    [Fact]
+    public async Task Scalar_OutsideDevelopment_IsNotMapped()
+    {
+        using var factory = new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder =>
+            {
+                builder.UseEnvironment("Testing");
+                builder.ConfigureAppConfiguration((_, config) =>
+                    config.AddInMemoryCollection(new Dictionary<string, string?>
+                    {
+                        ["Database:ConnectionString"] = "Host=unreachable;Database=x;Username=x;Password=x",
+                    }));
+            });
+        using var client = factory.CreateClient();
+
+        using var response = await client.GetAsync("/scalar", TestContext.Current.CancellationToken);
+
+        Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+    }
 }

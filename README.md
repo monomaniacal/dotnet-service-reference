@@ -90,6 +90,9 @@ database.
 
 ## Trying the API
 
+In Development the service also serves an interactive API reference at
+`http://localhost:5033/scalar`, generated from the same OpenAPI document.
+
 Once the service is running, use `src/ConfigService.Api/ConfigService.Api.http` — open it in VS
 Code with the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 extension and use "Send Request" above each block. The requests are chained: creating an
