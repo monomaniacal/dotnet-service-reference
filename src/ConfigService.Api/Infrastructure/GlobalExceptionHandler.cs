@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Diagnostics;
 
 namespace ConfigService.Api.Infrastructure;
 
-public sealed class GlobalExceptionHandler(
+public sealed partial class GlobalExceptionHandler(
     IProblemDetailsService problemDetailsService,
     IHostEnvironment hostEnvironment,
     ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
@@ -27,11 +27,7 @@ public sealed class GlobalExceptionHandler(
 
         if (statusCode == StatusCodes.Status500InternalServerError)
         {
-            logger.LogError(
-                exception,
-                "Unhandled exception processing {Method} {Path}",
-                httpContext.Request.Method,
-                httpContext.Request.Path);
+            LogUnhandledException(logger, exception, httpContext.Request.Method, httpContext.Request.Path);
         }
 
         httpContext.Response.StatusCode = statusCode;
@@ -50,4 +46,7 @@ public sealed class GlobalExceptionHandler(
 
         return true;
     }
+
+    [LoggerMessage(Level = LogLevel.Error, Message = "Unhandled exception processing {Method} {Path}")]
+    private static partial void LogUnhandledException(ILogger logger, Exception exception, string method, PathString path);
 }
