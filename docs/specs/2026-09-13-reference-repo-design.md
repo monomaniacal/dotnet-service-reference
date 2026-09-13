@@ -1,7 +1,7 @@
 # Design: .NET service reference repo
 
 Date: 2026-09-13
-Status: approved in conversation, awaiting written review
+Status: Tier 0 nearly complete. Backlog items 1-12 and 14-17 implemented and enforced by CI (see docs/roadmap.md); items 13 (repository settings) and 18 (seed the backlog as GitHub issues) are deferred until PRs #3-#18 are merged to `main`, per each item's own stated prerequisite.
 Source project: `project/config-service` on branch `monomaniacal` of the Module 1 course repo
 
 ## 1. Goal
