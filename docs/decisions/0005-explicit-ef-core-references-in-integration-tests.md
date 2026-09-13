@@ -1,6 +1,6 @@
 # 0005. The integration-test project references EF Core explicitly
 
-Status: accepted, 2026-09-09. To be superseded by central package management (backlog item 3).
+Status: superseded on 2026-09-13 by central package management. See `docs/practices/central-package-management.md`.
 
 ## Context
 
