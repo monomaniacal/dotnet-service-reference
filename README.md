@@ -4,8 +4,8 @@ A reference .NET service showing engineering practices that are enforced by tool
 explained in docs, and the source of a `dotnet new` template for new services.
 
 - **Run or read the service:** continue below.
-- **Adopt a practice:** `docs/` holds the design spec, the decision records, and, as they land,
-  one page per practice with its rationale and Microsoft source.
+- **Adopt a practice:** `docs/practices/` has one page per practice with its rationale and
+  Microsoft source. `docs/roadmap.md` explains the tiers. `docs/decisions/` holds the ADRs.
 - **Start a new service:** the template package is on the backlog; see the spec.
 
 Design and backlog: `docs/specs/2026-09-13-reference-repo-design.md`.
@@ -21,13 +21,11 @@ A small ASP.NET Core 10 Minimal API for managing **applications** and their **co
 
 - **.NET 10 SDK**
 - **Docker** (with Compose support — `docker compose`, not the old `docker-compose`)
-- The **`dotnet-ef`** global tool, needed for the migration workflow described below:
+- Repo-local tools (`dotnet-ef`, `husky`) come from the tool manifest. After cloning, run:
 
   ```bash
-  dotnet tool install --global dotnet-ef
+  dotnet tool restore
   ```
-
-  (or `dotnet tool update --global dotnet-ef` if you already have an older version)
 
 All commands below are run from `project/config-service/` (this directory) unless noted
 otherwise.
@@ -43,6 +41,15 @@ with credentials/database name `configservice`/`configservice`/`configservice` (
 `docker-compose.yml` and `src/ConfigService.Api/appsettings.Development.json`). Data persists in
 a named Docker volume across restarts. Run `docker compose down` to stop it, or `docker compose
 down -v` to also delete the volume and start from a truly empty database next time.
+
+Then tell the service how to reach it. The connection string is not committed; store it once
+per machine in user secrets:
+
+```bash
+dotnet user-secrets set "Database:ConnectionString" "Host=localhost;Port=5432;Database=configservice;Username=configservice;Password=configservice" --project src/ConfigService.Api
+```
+
+Every setting the service reads is listed in `docs/configuration.md`.
 
 ## Running the service
 
@@ -68,16 +75,23 @@ ahead of time, against that environment's own connection string:
 dotnet ef database update --project src/ConfigService.Api --startup-project src/ConfigService.Api
 ```
 
-By default this resolves the connection string the same way the app does in Development
-(`ConnectionStrings:Default` from `appsettings.json` / `appsettings.{Environment}.json` /
-environment variables — see `src/ConfigService.Api/Data/ConfigDbContextFactory.cs`, the
-design-time factory `dotnet ef` uses to construct the `DbContext`). To target a different
-environment's database, set `ConnectionStrings__Default` in the environment before running the
-command (or point `--connection` at the target string directly), then run it from a machine that
-can reach that database. This is the *only* way non-Development environments get their schema —
-if you skip it, the app will fail against an out-of-date/empty database.
+`dotnet ef` builds the app's own host, so it reads the same configuration sources. Locally,
+pass `-- --environment Development` so user secrets are loaded:
+
+```bash
+dotnet ef database update --project src/ConfigService.Api -- --environment Development
+```
+
+To target a different environment's database, set `Database__ConnectionString` in the
+environment before running the command (or point `--connection` at the target string directly),
+then run it from a machine that can reach that database. This is the *only* way non-Development
+environments get their schema — if you skip it, the app will fail against an out-of-date/empty
+database.
 
 ## Trying the API
+
+In Development the service also serves an interactive API reference at
+`http://localhost:5033/scalar`, generated from the same OpenAPI document.
 
 Once the service is running, use `src/ConfigService.Api/ConfigService.Api.http` — open it in VS
 Code with the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)

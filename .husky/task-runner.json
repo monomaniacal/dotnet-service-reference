@@ -1,0 +1,18 @@
+{
+  "$schema": "https://alirezanet.github.io/Husky.Net/schema.json",
+  "tasks": [
+    {
+      "name": "format-staged",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": ["format", "ConfigService.sln", "--verify-no-changes", "--no-restore", "--include", "${staged}"],
+      "include": ["**/*.cs"]
+    },
+    {
+      "name": "gitleaks-staged",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": ["husky", "exec", ".husky/csx/gitleaks.csx"]
+    }
+  ]
+}

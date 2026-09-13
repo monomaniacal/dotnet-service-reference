@@ -21,7 +21,7 @@ and the prioritised backlog are in `docs/specs/2026-09-13-reference-repo-design.
 - **Nothing speculative.** Every addition names the condition that makes it necessary now. If
   the trigger has not fired, it is a backlog item, not code.
 - **Every package justifies itself.** A new package needs a row in `docs/dependencies.md`
-  once that file exists; until then, an ADR.
+  saying why it is here and what it replaces. CI fails without it.
 - **Versions are pinned once.** Never add a version to a `.csproj` once central package
   management is in place.
 
