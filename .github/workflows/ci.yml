@@ -37,6 +37,8 @@ jobs:
           global-json-file: global.json
       - run: dotnet restore ConfigService.sln --locked-mode
       - run: dotnet build ConfigService.sln --no-restore --configuration Release
+      - name: OpenAPI document is up to date
+        run: git diff --exit-code -- docs/openapi/v1.json
 
   tier0-unit:
     runs-on: ubuntu-latest
