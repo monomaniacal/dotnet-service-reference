@@ -21,13 +21,11 @@ A small ASP.NET Core 10 Minimal API for managing **applications** and their **co
 
 - **.NET 10 SDK**
 - **Docker** (with Compose support — `docker compose`, not the old `docker-compose`)
-- The **`dotnet-ef`** global tool, needed for the migration workflow described below:
+- Repo-local tools (`dotnet-ef`, `husky`) come from the tool manifest. After cloning, run:
 
   ```bash
-  dotnet tool install --global dotnet-ef
+  dotnet tool restore
   ```
-
-  (or `dotnet tool update --global dotnet-ef` if you already have an older version)
 
 All commands below are run from `project/config-service/` (this directory) unless noted
 otherwise.
