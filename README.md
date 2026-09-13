@@ -4,8 +4,8 @@ A reference .NET service showing engineering practices that are enforced by tool
 explained in docs, and the source of a `dotnet new` template for new services.
 
 - **Run or read the service:** continue below.
-- **Adopt a practice:** `docs/` holds the design spec, the decision records, and, as they land,
-  one page per practice with its rationale and Microsoft source.
+- **Adopt a practice:** `docs/practices/` has one page per practice with its rationale and
+  Microsoft source. `docs/roadmap.md` explains the tiers. `docs/decisions/` holds the ADRs.
 - **Start a new service:** the template package is on the backlog; see the spec.
 
 Design and backlog: `docs/specs/2026-09-13-reference-repo-design.md`.
