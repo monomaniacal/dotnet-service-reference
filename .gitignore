@@ -483,3 +483,11 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Claude Code agent workspaces
+.claude/worktrees/
+.superpowers/
+
+# Husky.Net local install artifacts
+.husky/_/
+!.husky/csx/
