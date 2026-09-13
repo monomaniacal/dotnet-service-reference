@@ -1,0 +1,42 @@
+name: Backlog item
+description: A change with a reason to exist now and a way to prove it landed.
+title: "<verb> <thing>"
+labels: []
+body:
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Tier
+      options:
+        - tier-0 (always on)
+        - tier-1 (before first deploy)
+        - tier-2 (operating in production)
+        - gated (trigger not fired)
+    validations:
+      required: true
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Theme
+      options: [build, testing, security, api, config, governance, template, dx]
+    validations:
+      required: true
+  - type: textarea
+    id: why-now
+    attributes:
+      label: Why now
+      description: What breaks, costs, or stays unproven without this today? For a gated item, name the trigger.
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verified by
+      description: The command, test, or observable failure that proves it works.
+    validations:
+      required: true
+  - type: input
+    id: depends-on
+    attributes:
+      label: Depends on
+      description: Issue numbers, or "none".
