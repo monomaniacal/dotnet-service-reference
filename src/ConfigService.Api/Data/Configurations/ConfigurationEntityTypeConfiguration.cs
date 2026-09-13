@@ -1,5 +1,5 @@
-using System.Text.Json;
 using System.Linq;
+using System.Text.Json;
 using ConfigService.Api.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
