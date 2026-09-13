@@ -15,6 +15,7 @@
 
   <PropertyGroup>
     <HuskyRoot Condition="'$(HuskyRoot)' == ''">../../</HuskyRoot>
+    <UserSecretsId>c354c810-1825-44cc-ab0d-e52baca76fec</UserSecretsId>
   </PropertyGroup>
 
   <Target Name="Husky" AfterTargets="Restore" Condition="'$(HUSKY)' != 0"

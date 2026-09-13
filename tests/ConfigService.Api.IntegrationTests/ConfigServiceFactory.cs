@@ -17,7 +17,7 @@ public sealed class ConfigServiceFactory(string connectionString) : WebApplicati
         {
             configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ConnectionStrings:Default"] = connectionString,
+                ["Database:ConnectionString"] = connectionString,
             });
         });
     }

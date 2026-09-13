@@ -1,15 +1,22 @@
 using ConfigService.Api.Data;
 using ConfigService.Api.Endpoints;
 using ConfigService.Api.Infrastructure;
+using ConfigService.Api.Options;
 using ConfigService.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<ConfigDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddOptions<DatabaseOptions>()
+    .BindConfiguration(DatabaseOptions.SectionName)
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+builder.Services.AddDbContext<ConfigDbContext>((serviceProvider, options) =>
+    options.UseNpgsql(serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value.ConnectionString));
 
 builder.Services.AddSingleton(TimeProvider.System);
 
