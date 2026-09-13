@@ -11,8 +11,8 @@ Entry criterion: the repo exists. Required on every pull request by branch prote
 Landed: shared build settings and analyzers, central package management and lock files,
 NuGet audit, tool manifest, pre-commit hooks, the `tier0-*` CI jobs, coverage on changed
 lines, typed configuration with user secrets, the committed OpenAPI document, the API
-reference UI, the dependency register, Dependabot, contribution templates, repository
-settings. Each has a page in `docs/practices/`.
+reference UI, the dependency register, Dependabot, contribution templates. Each has a
+page in `docs/practices/`.
 
 Open items: https://github.com/monomaniacal/dotnet-service-reference/issues?q=is%3Aissue+is%3Aopen+label%3Atier-0
 
