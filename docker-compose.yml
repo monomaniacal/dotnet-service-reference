@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:18.6-alpine
+    container_name: configservice-postgres
+    environment:
+      POSTGRES_USER: configservice
+      POSTGRES_PASSWORD: configservice
+      POSTGRES_DB: configservice
+    ports:
+      - "5432:5432"
+    volumes:
+      # postgres:18+ images store data in a version-specific subdirectory under
+      # /var/lib/postgresql (pg_ctlcluster-compatible layout); mounting the named
+      # volume at /var/lib/postgresql/data directly triggers an init error.
+      - configservice-postgres-data:/var/lib/postgresql
+
+volumes:
+  configservice-postgres-data:

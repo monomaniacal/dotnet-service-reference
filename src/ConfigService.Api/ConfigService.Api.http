@@ -1,0 +1,78 @@
+@baseUrl = http://localhost:5033
+
+### Health check
+GET {{baseUrl}}/health
+
+
+
+### Create an application
+# @name createApplication
+POST {{baseUrl}}/api/v1/applications
+Content-Type: application/json
+
+{
+  "name": "Sample Application",
+  "comments": "Created via ConfigService.Api.http"
+}
+
+
+
+### Get the created application (id captured from the create response above)
+@applicationId = {{createApplication.response.body.$.id}}
+
+GET {{baseUrl}}/api/v1/applications/{{applicationId}}
+
+
+
+### Update the application (full replace)
+PUT {{baseUrl}}/api/v1/applications/{{applicationId}}
+Content-Type: application/json
+
+{
+  "name": "Sample Application (updated)",
+  "comments": "Updated via ConfigService.Api.http"
+}
+
+
+
+### List all applications
+GET {{baseUrl}}/api/v1/applications
+
+
+
+### Create a configuration for the application
+# @name createConfiguration
+POST {{baseUrl}}/api/v1/configurations
+Content-Type: application/json
+
+{
+  "applicationId": "{{applicationId}}",
+  "name": "primary-config",
+  "comments": "Created via ConfigService.Api.http",
+  "config": {
+    "featureFlag": true,
+    "maxRetries": 3
+  }
+}
+
+
+
+### Get the created configuration (id captured from the create response above)
+@configurationId = {{createConfiguration.response.body.$.id}}
+
+GET {{baseUrl}}/api/v1/configurations/{{configurationId}}
+
+
+
+### Update the configuration (full replace of name/comments/config)
+PUT {{baseUrl}}/api/v1/configurations/{{configurationId}}
+Content-Type: application/json
+
+{
+  "name": "primary-config",
+  "comments": "Updated via ConfigService.Api.http",
+  "config": {
+    "featureFlag": false,
+    "maxRetries": 5
+  }
+}
